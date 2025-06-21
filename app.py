@@ -41,5 +41,15 @@ def view_medicines():
     medicines = load_data()
     return render_template('view_medicines.html', medicines=medicines)
 
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+from check_reminders import check_and_send_reminders
+
+@app.route("/check")
+def run_reminder_now():
+    check_and_send_reminders()
+    return "Reminder check complete"
