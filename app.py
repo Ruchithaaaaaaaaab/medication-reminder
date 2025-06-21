@@ -53,3 +53,13 @@ from check_reminders import check_and_send_reminders
 def run_reminder_now():
     check_and_send_reminders()
     return "Reminder check complete"
+
+from check_reminders import check_and_send_reminders
+
+@app.route("/remind")
+def remind():
+    from check_reminders import run_reminders
+    run_reminders()
+    return "Reminders checked and messages sent!"
+
+
