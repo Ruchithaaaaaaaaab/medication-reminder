@@ -2,6 +2,11 @@
     {
         "medicine": "Neurobion",
         "dosage": "1",
-        "time": "14:30"
+        "time": "23:55"
+    },
+    {
+        "medicine": "Omega 3",
+        "dosage": "500mg",
+        "time": "23:57"
     }
 ]

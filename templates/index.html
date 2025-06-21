@@ -1,49 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>💊 Medication Reminder Manager</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Medication Reminder</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>💊 Medication Reminder Manager</h1>
-        <p class="tagline">Stay healthy, stay on time 🕒</p>
-
-        <form method="POST" action="/add" class="form">
-            <input type="text" name="medicine" placeholder="Medicine Name 💊" required>
+        <h1>Medication Reminder 💊</h1>
+        <form action="/add-reminder" method="POST">
+            <input type="text" name="medicine" placeholder="Medicine Name" required>
             <input type="text" name="dosage" placeholder="Dosage (e.g., 500mg)" required>
             <input type="time" name="time" required>
             <button type="submit">➕ Add Reminder</button>
         </form>
 
-        <h2>📝 Your Reminders</h2>
-        {% if reminders %}
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Medicine</th>
-                    <th>Dosage</th>
-                    <th>Time</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reminder in reminders %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ reminder.medicine }}</td>
-                    <td>{{ reminder.dosage }}</td>
-                    <td>{{ reminder.time }}</td>
-                    <td><a href="/delete/{{ loop.index0 }}" class="delete-btn">❌</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <p class="no-reminders">You haven't added any reminders yet 😌</p>
-        {% endif %}
+        <h2>Scheduled Reminders</h2>
+        <ul>
+            {% for r in reminders %}
+                <li>{{ r['time'] }} – {{ r['medicine'] }} ({{ r['dosage'] }})
+                    <a href="/delete/{{ r['id'] }}">❌</a>
+                </li>
+            {% else %}
+                <li>No reminders scheduled.</li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>
