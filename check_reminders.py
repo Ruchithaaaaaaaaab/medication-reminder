@@ -21,12 +21,12 @@ def send_sms(medicine, dosage):
     account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
     auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
     from_number = os.environ.get("TWILIO_PHONE_NUMBER")
-    to_number = os.environ.get("TO_PHONE_NUMBER")
+    to_number = os.environ.get("RECEIVER_PHONE_NUMBER")
 
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
-        body=f"Reminder: Take {medicine} ({dosage}) 💊",
+        body=f"⏰ Reminder: Take {medicine} ({dosage})",
         from_=from_number,
         to=to_number
     )
