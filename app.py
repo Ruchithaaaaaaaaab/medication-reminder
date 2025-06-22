@@ -42,15 +42,30 @@ def delete_reminder(id):
 
 @app.route('/remind')
 def remind():
+    from whatsapp import send_whatsapp_message
     now = datetime.now().strftime('%H:%M')
+    print(f"[{now}] 🔎 Checking for reminders...")
+
     conn = get_db_connection()
     reminders = conn.execute('SELECT * FROM reminders WHERE time = ?', (now,)).fetchall()
+    
+    if reminders:
+        print(f"✅ Found {len(reminders)} reminder(s) for now.")
+    else:
+        print("⚠️ No reminders match the current time.")
+
     for reminder in reminders:
         message = f"⏰ Reminder: Take {reminder['medicine']} ({reminder['dosage']})"
-        send_whatsapp_message(message)
+        print(f"📤 Sending WhatsApp: {message}")
+        try:
+            sid = send_whatsapp_message(message)
+            print(f"✅ Message sent! SID: {sid}")
+        except Exception as e:
+            print(f"❌ Error sending WhatsApp: {e}")
 
     conn.close()
-    return "Reminder check triggered ✅"
+    return "Reminder check complete."
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=10000)
