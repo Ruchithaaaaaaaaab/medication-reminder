@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import datetime
-from whatsapp import send_whatsapp_message
+from whatsapp import send_whatsapp_message  # This must be in the same directory
 import os
 
 app = Flask(__name__)
 
 DATABASE = 'reminders.db'
+PORT = int(os.environ.get("PORT", 10000))  # for Render to detect
 
 def init_db():
     with sqlite3.connect(DATABASE) as conn:
@@ -57,12 +58,12 @@ def check_reminders():
     if reminders:
         for reminder in reminders:
             msg = f"💊 Reminder: Take {reminder[1]} ({reminder[2]}) now!"
-            print(f"📤 Sending reminder: {msg}")
+            print(f"📤 Sending: {msg}")
             send_whatsapp_message(msg)
     else:
-        print("⏰ No reminders to send at this time.")
+        print("⏰ No reminders to send now.")
 
     return "Notification check complete"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=PORT)
