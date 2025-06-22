@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from datetime import datetime
+from pytz import timezone
 import sqlite3
 import os
 from whatsapp import send_whatsapp_message
@@ -51,8 +52,12 @@ def delete_reminder(id):
 
 @app.route('/remind')
 def remind():
-    now = datetime.now().strftime("%H:%M")
-    print("🕒 Checking reminders at:", now)
+    # Get current IST time
+    utc_now = datetime.utcnow()
+    ist_now = utc_now.astimezone(timezone("Asia/Kolkata"))
+    now = ist_now.strftime("%H:%M")
+
+    print("🕒 IST Time Check:", now)
 
     conn = sqlite3.connect(DATABASE)
     reminders = conn.execute("SELECT * FROM reminders WHERE time = ?", (now,)).fetchall()
