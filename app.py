@@ -54,6 +54,8 @@ def delete_reminder(id):
 
 @app.route('/remind')
 def remind():
+    print("🕒 Checking reminders at:", now)
+    print("🔍 Found reminders:", len(reminders))
     now = datetime.now().strftime("%H:%M")
     conn = sqlite3.connect(DATABASE)
     reminders = conn.execute("SELECT * FROM reminders WHERE time = ?", (now,)).fetchall()
