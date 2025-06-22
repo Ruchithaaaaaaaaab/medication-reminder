@@ -2,11 +2,14 @@ from flask import Flask, render_template, request, redirect
 from datetime import datetime
 import sqlite3
 import os
-from whatsapp import send_whatsapp_message
+from email_utils import init_mail, send_email_notification
 
 app = Flask(__name__)
 DATABASE = 'reminders.db'
-PORT = int(os.environ.get("PORT", 10000))  # For Render
+PORT = int(os.environ.get("PORT", 10000))
+
+# Initialize DB and mail
+init_mail(app)
 
 def init_db():
     conn = sqlite3.connect(DATABASE)
@@ -58,7 +61,7 @@ def remind():
 
     for r in reminders:
         message = f"💊 Reminder: Take {r[1]} ({r[2]})"
-        send_whatsapp_message(message)
+        send_email_notification("Medication Reminder", message)
 
     return "✅ Reminder check complete", 200
 
