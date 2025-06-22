@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect
 from datetime import datetime
 import sqlite3
-from whatsapp import send_whatsapp
+from whatsapp import send_whatsapp_message
+
+
 
 app = Flask(__name__)
 
@@ -45,7 +47,8 @@ def remind():
     reminders = conn.execute('SELECT * FROM reminders WHERE time = ?', (now,)).fetchall()
     for reminder in reminders:
         message = f"⏰ Reminder: Take {reminder['medicine']} ({reminder['dosage']})"
-        send_whatsapp(message)
+        send_whatsapp_message(message)
+
     conn.close()
     return "Reminder check triggered ✅"
 
