@@ -2,14 +2,11 @@ from flask import Flask, render_template, request, redirect
 from datetime import datetime
 import sqlite3
 import os
-from email_utils import init_mail, send_email_notification
+from whatsapp import send_whatsapp_message
 
 app = Flask(__name__)
 DATABASE = 'reminders.db'
 PORT = int(os.environ.get("PORT", 10000))
-
-# Initialize DB and mail
-init_mail(app)
 
 def init_db():
     conn = sqlite3.connect(DATABASE)
@@ -54,7 +51,6 @@ def delete_reminder(id):
 
 @app.route('/remind')
 def remind():
-    from datetime import datetime  # (safety: just to be sure)
     now = datetime.now().strftime("%H:%M")
     print("🕒 Checking reminders at:", now)
 
@@ -65,9 +61,9 @@ def remind():
     print("🔍 Found reminders:", len(reminders))
 
     for r in reminders:
-        message = f"💊 Reminder: Take {r[1]} ({r[2]})"
-        print("📧 Sending email:", message)
-        send_email_notification("Medication Reminder", message)
+        message = f"💊 WhatsApp Reminder: Take {r[1]} ({r[2]})"
+        print("📲 Sending WhatsApp message:", message)
+        send_whatsapp_message(message)
 
     return "✅ Reminder check complete", 200
 
