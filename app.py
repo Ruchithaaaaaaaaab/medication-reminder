@@ -54,15 +54,19 @@ def delete_reminder(id):
 
 @app.route('/remind')
 def remind():
-    print("🕒 Checking reminders at:", now)
-    print("🔍 Found reminders:", len(reminders))
+    from datetime import datetime  # (safety: just to be sure)
     now = datetime.now().strftime("%H:%M")
+    print("🕒 Checking reminders at:", now)
+
     conn = sqlite3.connect(DATABASE)
     reminders = conn.execute("SELECT * FROM reminders WHERE time = ?", (now,)).fetchall()
     conn.close()
 
+    print("🔍 Found reminders:", len(reminders))
+
     for r in reminders:
         message = f"💊 Reminder: Take {r[1]} ({r[2]})"
+        print("📧 Sending email:", message)
         send_email_notification("Medication Reminder", message)
 
     return "✅ Reminder check complete", 200
