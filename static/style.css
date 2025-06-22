@@ -4,7 +4,6 @@ body {
     margin: 0;
     padding: 20px;
 }
-
 .container {
     max-width: 500px;
     background: white;
@@ -13,23 +12,19 @@ body {
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
 h1, h2 {
     color: #2c3e50;
     text-align: center;
 }
-
 form {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
 input, button {
     padding: 10px;
     font-size: 1em;
 }
-
 button {
     background: #27ae60;
     color: white;
@@ -37,16 +32,13 @@ button {
     border-radius: 8px;
     cursor: pointer;
 }
-
 button:hover {
     background: #219150;
 }
-
 ul {
     list-style: none;
     padding: 0;
 }
-
 li {
     margin: 10px 0;
     font-size: 1em;
